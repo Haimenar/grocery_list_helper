@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(
-      ListApp()
-  );
+  runApp(ListApp());
 }
 
 class ListApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(backgroundColor: Colors.pink[100],
+      home: Scaffold(
         appBar: AppBar(
-            backgroundColor: Colors.pink[300],
-            title: Text("Grocery Helper",
+          backgroundColor: Colors.pink[400],
+          elevation: 0,
+          title: Text(
+            "Grocery Helper",
             style: TextStyle(
               fontSize: 40,
               color: Colors.grey[100],
             ),
           ),
-          actions: <Widget> [
+          actions: <Widget>[
             Padding(
               padding: const EdgeInsets.only(right: 15.0),
               child: IconButton.filled(
@@ -30,29 +30,37 @@ class ListApp extends StatelessWidget {
                 onPressed: () {},
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Colors.pink[100]),
-                )
+                ),
               ),
             )
-          ]
-
+          ],
         ),
-        body: SafeArea(
-          child: Column(
-              mainAxisSize: MainAxisSize.min,
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.pink[400]!, Colors.pink[200]!], // Gradient colors
+              begin: Alignment.topCenter, // Start at the top
+              end: Alignment.bottomCenter, // End at the bottom
+            ),
+          ),
+          child: SafeArea(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: 17, horizontal: 17.0),
+                  margin: EdgeInsets.symmetric(horizontal: 17.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget> [
+                    children: <Widget>[
                       Card(
-                        color: Colors.pink[200],
+                        color: Colors.pink[100],
                         child: Padding(
                           padding: EdgeInsets.all(10.0),
                           child: SizedBox(
                             width: double.infinity,
                             height: 400.0,
-                            child: Text("List",
+                            child: Text(
+                              "List",
                               style: TextStyle(
                                 fontSize: 30,
                                 color: Colors.grey[100],
@@ -62,17 +70,16 @@ class ListApp extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(
-                          height: 17.0
-                      ),
+                      SizedBox(height: 17.0),
                       Card(
-                        color: Colors.pink[200],
+                        color: Colors.pink[100],
                         child: Padding(
                           padding: EdgeInsets.all(10.0),
                           child: SizedBox(
                             width: double.infinity,
                             height: 300.0,
-                            child: Text("Recipes",
+                            child: Text(
+                              "Recipes",
                               style: TextStyle(
                                 fontSize: 30,
                                 color: Colors.grey[100],
@@ -82,14 +89,12 @@ class ListApp extends StatelessWidget {
                           ),
                         ),
                       ),
-
                     ],
                   ),
                 ),
-
-              ]
+              ],
+            ),
           ),
-
         ),
       ),
     );
