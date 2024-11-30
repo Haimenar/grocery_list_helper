@@ -29,7 +29,7 @@ class ListApp extends StatelessWidget {
                 tooltip: "Open Settings",
                 onPressed: () {},
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.pink[100]),
+                  backgroundColor: WidgetStateProperty.all(Colors.pink[100]),
                 ),
               ),
             )
