@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'grocery_list_screen.dart';
 
 void main() {
-  runApp(ListApp());
+  runApp(GroceryHelperMain());
 }
 
-class ListApp extends StatelessWidget {
+class GroceryHelperMain extends StatelessWidget {
+  GroceryHelperMain({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.pink[400],
+          backgroundColor: Colors.pink[600],
           elevation: 0,
           title: Text(
             "Grocery Helper",
@@ -21,11 +24,11 @@ class ListApp extends StatelessWidget {
           ),
           actions: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(right: 15.0),
+              padding: const EdgeInsets.only(right: 15.0, bottom: 8.0),
               child: IconButton.filled(
                 icon: const Icon(Icons.settings),
                 iconSize: 35,
-                color: Colors.pink[300],
+                color: Colors.pink[400],
                 tooltip: "Open Settings",
                 onPressed: () {},
                 style: ButtonStyle(
@@ -38,7 +41,7 @@ class ListApp extends StatelessWidget {
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.pink[400]!, Colors.pink[200]!], // Gradient colors
+              colors: [Colors.pink[500]!, Colors.pink[200]!], // Gradient colors
               begin: Alignment.topCenter, // Start at the top
               end: Alignment.bottomCenter, // End at the bottom
             ),
@@ -48,33 +51,45 @@ class ListApp extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Container(
-                  margin: EdgeInsets.symmetric(horizontal: 17.0),
+                  margin: const EdgeInsets.symmetric(horizontal: 17.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Card(
-                        color: Colors.pink[100],
-                        child: Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: SizedBox(
-                            width: double.infinity,
-                            height: 400.0,
-                            child: Text(
-                              "List",
-                              style: TextStyle(
-                                fontSize: 30,
-                                color: Colors.grey[100],
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => GroceryListScreen(),
+                            ),
+                          );
+                        },
+                        child: Card(
+                          elevation: 7.0,
+                          color: Colors.pink[100],
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: SizedBox(
+                              width: double.infinity,
+                              height: 400.0,
+                              child: Text(
+                                "List",
+                                style: TextStyle(
+                                  fontSize: 30,
+                                  color: Colors.grey[100],
+                                ),
+                                textAlign: TextAlign.center,
                               ),
-                              textAlign: TextAlign.center,
                             ),
                           ),
                         ),
                       ),
-                      SizedBox(height: 17.0),
+                      const SizedBox(height: 17.0),
                       Card(
+                        elevation: 7.0,
                         color: Colors.pink[100],
                         child: Padding(
-                          padding: EdgeInsets.all(10.0),
+                          padding: const EdgeInsets.all(10.0),
                           child: SizedBox(
                             width: double.infinity,
                             height: 300.0,
@@ -100,3 +115,5 @@ class ListApp extends StatelessWidget {
     );
   }
 }
+
+
