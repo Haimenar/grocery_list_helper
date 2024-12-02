@@ -28,22 +28,21 @@ class GroceryHelperMain extends StatelessWidget {
               child: IconButton.filled(
                 icon: const Icon(Icons.settings),
                 iconSize: 35,
-                color: Colors.pink[400],
+                color: Colors.pink[600],
                 tooltip: "Open Settings",
                 onPressed: () {},
                 style: ButtonStyle(
-                  backgroundColor: WidgetStateProperty.all(Colors.pink[100]),
+                  backgroundColor: WidgetStateProperty.all(Colors.pink[200]),
                 ),
               ),
-            )
-          ],
+            )          ],
         ),
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.pink[500]!, Colors.pink[200]!], // Gradient colors
-              begin: Alignment.topCenter, // Start at the top
-              end: Alignment.bottomCenter, // End at the bottom
+              colors: [Colors.pink[500]!, Colors.pink[200]!],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
             ),
           ),
           child: SafeArea(
@@ -55,34 +54,45 @@ class GroceryHelperMain extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => GroceryListScreen(),
+                      Builder(
+                        builder: (context) {
+                          return InkWell(
+                            onTap: () {
+                              // Use this context that has access to a Navigator
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => GroceryListScreen(),
+                                ),
+                              );
+                            },
+                            child: Card(
+                              elevation: 7.0,
+                              color: Colors.pink[100],
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: SizedBox(
+                                  width: double.infinity,
+                                  height: 400.0,
+                                  child: Align(
+                                    alignment: Alignment.topCenter,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top: 8.0),
+                                      child: Text(
+                                        "List",
+                                        style: TextStyle(
+                                          fontSize: 30,
+                                          color: Colors.grey[100],
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                           );
                         },
-                        child: Card(
-                          elevation: 7.0,
-                          color: Colors.pink[100],
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: SizedBox(
-                              width: double.infinity,
-                              height: 400.0,
-                              child: Text(
-                                "List",
-                                style: TextStyle(
-                                  fontSize: 30,
-                                  color: Colors.grey[100],
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                        ),
                       ),
                       const SizedBox(height: 17.0),
                       Card(
@@ -93,13 +103,19 @@ class GroceryHelperMain extends StatelessWidget {
                           child: SizedBox(
                             width: double.infinity,
                             height: 300.0,
-                            child: Text(
-                              "Recipes",
-                              style: TextStyle(
-                                fontSize: 30,
-                                color: Colors.grey[100],
+                            child: Align(
+                              alignment: Alignment.topCenter,
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 8.0),
+                                child: Text(
+                                  "Recipes",
+                                  style: TextStyle(
+                                    fontSize: 30,
+                                    color: Colors.grey[100],
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
-                              textAlign: TextAlign.center,
                             ),
                           ),
                         ),
@@ -115,5 +131,3 @@ class GroceryHelperMain extends StatelessWidget {
     );
   }
 }
-
-
