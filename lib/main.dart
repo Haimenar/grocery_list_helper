@@ -6,8 +6,18 @@ void main() {
   runApp(GroceryHelperMain());
 }
 
-class GroceryHelperMain extends StatelessWidget {
-  GroceryHelperMain({super.key});
+class GroceryHelperMain extends StatefulWidget {
+  @override
+  _GroceryHelperMainState createState() => _GroceryHelperMainState();
+}
+
+class _GroceryHelperMainState extends State<GroceryHelperMain> {
+  int _currentIndex = 1;
+  final List<Widget> _screens = [
+    GroceryListScreen(),
+    GroceryHelperScreen(),
+    RecipeListScreen(),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -18,55 +28,63 @@ class GroceryHelperMain extends StatelessWidget {
           elevation: 0.0,
           title: Text(
             "Grocery Helper",
-            style: TextStyle(
-              fontSize: 40,
-              color: Colors.grey[100],
-            ),
+            style: TextStyle(fontSize: 40, color: Colors.grey[100]),
           ),
-          actions: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(right: 15.0, bottom: 8.0),
-              child: IconButton.filled(
-                icon: const Icon(Icons.settings),
-                iconSize: 35,
-                color: Colors.pink[600],
-                tooltip: "Open Settings",
-                onPressed: () {},
-                style: ButtonStyle(
-                  backgroundColor: WidgetStateProperty.all(Colors.pink[200]),
-                ),
-              ),
-            )          ],
         ),
-        body: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Colors.pink[500]!,
-                Colors.pink[200]!,
-              ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
+        body: _screens[_currentIndex],
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _currentIndex,
+          onTap: (index) => setState(() => _currentIndex = index),
+          backgroundColor: Colors.pink[100],
+          selectedItemColor: Colors.pink[600],
+          unselectedItemColor: Colors.grey[100],
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.list),
+              label: "List",
             ),
-          ),
-          child: SafeArea(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 17.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      GroceryListPreview(),
-                      const SizedBox(height: 17.0),
-                      RecipesPreview(),
-                    ],
-                  ),
-                ),
-              ],
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: "Home",
             ),
-          ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.book),
+              label: "Recipes",
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class GroceryHelperScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Colors.pink[500]!, Colors.pink[200]!],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+      ),
+      child: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 17.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GroceryListPreview(),
+                  const SizedBox(height: 17.0),
+                  RecipesPreview(),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -74,69 +92,13 @@ class GroceryHelperMain extends StatelessWidget {
 }
 
 class GroceryListPreview extends StatelessWidget {
-  GroceryListPreview({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Builder(
-      builder: (context) {
-        return InkWell(
-          onTap: () {
-            // Use this context that has access to a Navigator
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => GroceryListScreen(),
-              ),
-            );
-          },
-          child: Card(
-            elevation: 7.0,
-            color: Colors.pink[100],
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: SizedBox(
-                width: double.infinity,
-                height: 400.0,
-                child: Align(
-                  alignment: Alignment.topCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 4.0),
-                    child: Text(
-                      "List",
-                      style: TextStyle(
-                        fontSize: 30,
-                        color: Colors.grey[100],
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-
-  }
-}
-
-class RecipesPreview extends StatelessWidget {
-  RecipesPreview({super.key});
-
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        // Use this context that has access to a Navigator
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => RecipeListScreen(),
-          ),
-        );
-      },
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => GroceryListScreen()),
+      ),
       child: Card(
         elevation: 7.0,
         color: Colors.pink[100],
@@ -144,17 +106,14 @@ class RecipesPreview extends StatelessWidget {
           padding: const EdgeInsets.all(10.0),
           child: SizedBox(
             width: double.infinity,
-            height: 300.0,
+            height: 400.0,
             child: Align(
               alignment: Alignment.topCenter,
               child: Padding(
                 padding: const EdgeInsets.only(top: 4.0),
                 child: Text(
-                  "Recipes",
-                  style: TextStyle(
-                    fontSize: 30,
-                    color: Colors.grey[100],
-                  ),
+                  "List",
+                  style: TextStyle(fontSize: 30, color: Colors.grey[100]),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -163,6 +122,39 @@ class RecipesPreview extends StatelessWidget {
         ),
       ),
     );
+  }
+}
 
+class RecipesPreview extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => RecipeListScreen()),
+      ),
+      child: Card(
+        elevation: 7.0,
+        color: Colors.pink[100],
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: SizedBox(
+            width: double.infinity,
+            height: 240.0,
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 4.0),
+                child: Text(
+                  "Recipes",
+                  style: TextStyle(fontSize: 30, color: Colors.grey[100]),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

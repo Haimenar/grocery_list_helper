@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'main.dart';
+import 'grocery_list_screen.dart';
 
 class RecipeListScreen extends StatefulWidget {
   RecipeListScreen({super.key});
@@ -38,19 +40,6 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.pink[600],
-        title: Text(
-          "Recipes",
-          style: TextStyle(
-            fontSize: 40,
-            color: Colors.grey[100],
-          ),
-        ),
-        iconTheme: IconThemeData(
-          color: Colors.grey[100],
-        ),
-      ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
