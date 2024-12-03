@@ -18,14 +18,6 @@ class GroceryListScreen extends StatelessWidget {
         iconTheme: IconThemeData(
           color: Colors.grey[100],
         ),
-        actions: const <Widget>[
-          // IconButton(
-          //   icon: (Icons.search),
-          //   onPressed: () {
-          //     // Implement search bar
-          //   },
-          // )
-        ],
       ),
       body: Container(
         decoration: BoxDecoration(
