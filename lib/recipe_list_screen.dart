@@ -55,8 +55,8 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Colors.pink[600]!, // Dark pink at the top
-              Colors.pink[200]!, // Lighter pink at the bottom
+              Colors.pink[500]!,
+              Colors.pink[200]!,
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,

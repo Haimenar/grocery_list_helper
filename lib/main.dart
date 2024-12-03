@@ -41,7 +41,10 @@ class GroceryHelperMain extends StatelessWidget {
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.pink[500]!, Colors.pink[200]!],
+              colors: [
+                Colors.pink[500]!,
+                Colors.pink[200]!,
+              ],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),
