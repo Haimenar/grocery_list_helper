@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'main.dart';
-import 'recipe_list_screen.dart';
+import 'package:provider/provider.dart';
+import 'grocery_data.dart';
 
 class GroceryListScreen extends StatelessWidget {
   GroceryListScreen({super.key});
@@ -22,9 +22,7 @@ class GroceryListScreen extends StatelessWidget {
         child: ShoppingListBody(),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Implement Later
-        },
+        onPressed: () => _showAddItemDialog(context), // Show Add Item Dialog
         tooltip: "Add Item",
         child: const Icon(Icons.add),
       ),
@@ -34,6 +32,7 @@ class GroceryListScreen extends StatelessWidget {
 
 void _showAddItemDialog(BuildContext context) {
   TextEditingController itemController = TextEditingController();
+
   showDialog(
     context: context,
     builder: (context) {
@@ -50,7 +49,10 @@ void _showAddItemDialog(BuildContext context) {
           ),
           TextButton(
             onPressed: () {
-              // Implement Adding the Item to the List
+              if (itemController.text.isNotEmpty) {
+                Provider.of<GroceryData>(context, listen: false)
+                    .addGroceryItem(itemController.text);
+              }
               Navigator.pop(context);
             },
             child: const Text("Add Item"),
@@ -62,47 +64,44 @@ void _showAddItemDialog(BuildContext context) {
 }
 
 class ShoppingListBody extends StatelessWidget {
-  final List<String> mockItems = [
-    "Milk",
-    "Eggs",
-    "Sugar",
-    "Apples",
-    "Carrots",
-  ];
-
   ShoppingListBody({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(9.0),
-      child: ListView.builder(
-        itemCount: mockItems.length,
-        itemBuilder: (context, index) {
-          return Card(
-            color: Colors.pink[200],
-            elevation: 5.0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            margin: const EdgeInsets.symmetric(vertical: 4.0), // Margin between cards
-            child: ListTile(
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16.0), // Padding inside the card
-              title: Text(
-                mockItems[index],
-                style: TextStyle(
-                  color: Colors.grey[100],
-                  fontSize: 16,
+      child: Consumer<GroceryData>(
+        builder: (context, groceryData, child) {
+          return ListView.builder(
+            itemCount: groceryData.groceryItems.length,
+            itemBuilder: (context, index) {
+              return Card(
+                color: Colors.pink[200],
+                elevation: 5.0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
                 ),
-              ),
-              trailing: IconButton(
-                icon: const Icon(Icons.delete),
-                color: Colors.grey[200],
-                onPressed: () {
-                  // Implement Deleting Items
-                },
-              ),
-            ),
+                margin: const EdgeInsets.symmetric(vertical: 4.0),
+                child: ListTile(
+                  contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16.0),
+                  title: Text(
+                    groceryData.groceryItems[index],
+                    style: TextStyle(
+                      color: Colors.grey[100],
+                      fontSize: 16,
+                    ),
+                  ),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.delete),
+                    color: Colors.grey[200],
+                    onPressed: () {
+                      groceryData.removeGroceryItem(index);
+                    },
+                  ),
+                ),
+              );
+            },
           );
         },
       ),

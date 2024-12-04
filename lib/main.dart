@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'grocery_list_screen.dart';
 import 'recipe_list_screen.dart';
-// import 'package:flutter/rendering.dart';
+import 'grocery_data.dart';
+import 'recipe_data.dart';
 
 void main() {
-  // debugPaintSizeEnabled = true;
-  runApp(GroceryHelperMain());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => GroceryData()), // Provide GroceryData
+        ChangeNotifierProvider(create: (context) => RecipeData()),  // Provide RecipeData
+      ],
+      child: GroceryHelperMain(),
+    ),
+  );
 }
 
 class GroceryHelperMain extends StatefulWidget {
@@ -113,7 +122,7 @@ class GroceryListPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => onPreviewTap(), // Use the provided callback to switch screens
+      onTap: () => onPreviewTap(),
       child: Card(
         elevation: 7.0,
         color: Colors.pink[100],
@@ -122,16 +131,29 @@ class GroceryListPreview extends StatelessWidget {
           child: SizedBox(
             width: double.infinity,
             height: 400.0,
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 4.0),
-                child: Text(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
                   "List",
-                  style: TextStyle(fontSize: 30, color: Colors.grey[100]),
-                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 20, color: Colors.grey[100]),
                 ),
-              ),
+                Expanded(
+                  child: Consumer<GroceryData>(
+                    builder: (context, groceryData, child) {
+                      return ListView.builder(
+                        itemCount: groceryData.groceryItems.length,
+                        itemBuilder: (context, index) {
+                          return Text(
+                            groceryData.groceryItems[index],
+                            style: TextStyle(color: Colors.grey[100]),
+                          );
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -139,16 +161,14 @@ class GroceryListPreview extends StatelessWidget {
     );
   }
 }
-
 class RecipesPreview extends StatelessWidget {
   final Function onPreviewTap;
-
   RecipesPreview({required this.onPreviewTap});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => onPreviewTap(), // Use the provided callback to switch screens
+      onTap: () => onPreviewTap(),
       child: Card(
         elevation: 7.0,
         color: Colors.pink[100],
@@ -157,16 +177,40 @@ class RecipesPreview extends StatelessWidget {
           child: SizedBox(
             width: double.infinity,
             height: 240.0,
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 4.0),
-                child: Text(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
                   "Recipes",
-                  style: TextStyle(fontSize: 30, color: Colors.grey[100]),
-                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 20, color: Colors.grey[100]),
                 ),
-              ),
+                Expanded(
+                  child: Consumer<RecipeData>(
+                    builder: (context, recipeData, child) {
+                      return ListView.builder(
+                        itemCount: recipeData.recipeItems.length,
+                        itemBuilder: (context, index) {
+                          // Get the recipe and its ingredients
+                          var recipe = recipeData.recipeItems[index];
+                          String recipeName = recipe.keys.first;
+                          List<String> ingredients = recipe[recipeName]!;
+
+                          return ListTile(
+                            title: Text(
+                              recipeName,
+                              style: TextStyle(color: Colors.grey[100]),
+                            ),
+                            subtitle: Text(
+                              ingredients.join(", "),
+                              style: TextStyle(color: Colors.grey[100]),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
           ),
         ),
