@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'grocery_list_screen.dart';
+import 'models/recipe.dart';
 import 'recipe_list_screen.dart';
 import 'grocery_data.dart';
 import 'recipe_data.dart';
@@ -190,18 +191,15 @@ class RecipesPreview extends StatelessWidget {
                       return ListView.builder(
                         itemCount: recipeData.recipeItems.length,
                         itemBuilder: (context, index) {
-                          // Get the recipe and its ingredients
-                          var recipe = recipeData.recipeItems[index];
-                          String recipeName = recipe.keys.first;
-                          List<String> ingredients = recipe[recipeName]!;
+                          Recipe recipe = recipeData.recipeItems[index];
 
                           return ListTile(
                             title: Text(
-                              recipeName,
+                              recipe.name,
                               style: TextStyle(color: Colors.grey[100]),
                             ),
                             subtitle: Text(
-                              ingredients.join(", "),
+                              "Ingredients: ${recipe.ingredients.join(", ")}\nCategories: ${recipe.recipeCategories.join(", ")}",
                               style: TextStyle(color: Colors.grey[100]),
                             ),
                           );

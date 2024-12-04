@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'recipe_data.dart'; // Assuming this file exists
+import 'models/recipe.dart';
+import 'recipe_data.dart';
 
 class RecipeListScreen extends StatefulWidget {
   RecipeListScreen({super.key});
@@ -11,7 +12,6 @@ class RecipeListScreen extends StatefulWidget {
 
 class _RecipeListScreenState extends State<RecipeListScreen> {
   String searchQuery = "";
-  List<Map<String, List<String>>> filteredRecipes = [];
 
   @override
   void initState() {
@@ -28,9 +28,9 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
   Widget build(BuildContext context) {
     return Consumer<RecipeData>(
       builder: (context, recipeData, child) {
-        filteredRecipes = recipeData.recipeItems.where((recipe) {
-          String recipeName = recipe.keys.first;
-          return recipeName.toLowerCase().contains(searchQuery.toLowerCase());
+        // Filter the recipes based on search query
+        List<Recipe> filteredRecipes = recipeData.recipeItems.where((recipe) {
+          return recipe.name.toLowerCase().contains(searchQuery.toLowerCase());
         }).toList();
 
         return Scaffold(
@@ -68,9 +68,7 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                   child: ListView.builder(
                     itemCount: filteredRecipes.length,
                     itemBuilder: (context, index) {
-                      String recipeName = filteredRecipes[index].keys.first;
-                      List<String> ingredients = filteredRecipes[index][recipeName]!;
-
+                      Recipe recipe = filteredRecipes[index];
                       return Card(
                         color: Colors.pink[200],
                         elevation: 5.0,
@@ -81,14 +79,14 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                         child: ListTile(
                           contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
                           title: Text(
-                            recipeName,
+                            recipe.name,
                             style: TextStyle(
                               color: Colors.grey[100],
                               fontSize: 16,
                             ),
                           ),
                           subtitle: Text(
-                            "Ingredients: ${ingredients.join(", ")}",
+                            "Ingredients: ${recipe.ingredients.join(", ")}\nCategories: ${recipe.recipeCategories.join(", ")}",
                             style: TextStyle(
                               color: Colors.grey[300],
                               fontSize: 12,
@@ -124,6 +122,7 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
   void _showAddRecipeDialog(BuildContext context) {
     TextEditingController recipeNameController = TextEditingController();
     TextEditingController ingredientsController = TextEditingController();
+    TextEditingController categoriesController = TextEditingController();
 
     showDialog(
       context: context,
@@ -141,6 +140,10 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                 controller: ingredientsController,
                 decoration: const InputDecoration(hintText: "Comma separated ingredients"),
               ),
+              TextField(
+                controller: categoriesController,
+                decoration: const InputDecoration(hintText: "Comma separated categories"),
+              ),
             ],
           ),
           actions: [
@@ -150,12 +153,20 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
             ),
             TextButton(
               onPressed: () {
-                if (recipeNameController.text.isNotEmpty && ingredientsController.text.isNotEmpty) {
+                if (recipeNameController.text.isNotEmpty &&
+                    ingredientsController.text.isNotEmpty &&
+                    categoriesController.text.isNotEmpty) {
                   List<String> ingredients = ingredientsController.text.split(",");
-                  Provider.of<RecipeData>(context, listen: false).addRecipe(
-                    recipeNameController.text,
-                    ingredients,
+                  List<String> categories = categoriesController.text.split(",");
+
+                  Recipe newRecipe = Recipe(
+                    id: DateTime.now().toString(), // Unique ID (could be UUID or something else)
+                    name: recipeNameController.text,
+                    ingredients: ingredients,
+                    recipeCategories: categories,
                   );
+
+                  Provider.of<RecipeData>(context, listen: false).addRecipe(newRecipe);
                   Navigator.pop(context);
                 }
               },
