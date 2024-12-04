@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'grocery_list_screen.dart';
 import 'recipe_list_screen.dart';
+// import 'package:flutter/rendering.dart';
 
 void main() {
+  // debugPaintSizeEnabled = true;
   runApp(GroceryHelperMain());
 }
 
@@ -13,11 +15,20 @@ class GroceryHelperMain extends StatefulWidget {
 
 class _GroceryHelperMainState extends State<GroceryHelperMain> {
   int _currentIndex = 1;
-  final List<Widget> _screens = [
-    GroceryListScreen(),
-    GroceryHelperScreen(),
-    RecipeListScreen(),
-  ];
+  late List<Widget> _screens;
+
+  @override
+  void initState() {
+    super.initState();
+    _screens = [
+      GroceryListScreen(),
+      GroceryHelperScreen(
+        onListTap: () => setState(() => _currentIndex = 0),
+        onRecipesTap: () => setState(() => _currentIndex = 2),
+      ),
+      RecipeListScreen(),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +70,11 @@ class _GroceryHelperMainState extends State<GroceryHelperMain> {
 }
 
 class GroceryHelperScreen extends StatelessWidget {
+  final Function onListTap;
+  final Function onRecipesTap;
+
+  GroceryHelperScreen({required this.onListTap, required this.onRecipesTap});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -69,36 +85,35 @@ class GroceryHelperScreen extends StatelessWidget {
           end: Alignment.bottomCenter,
         ),
       ),
-      child: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 17.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  GroceryListPreview(),
-                  const SizedBox(height: 17.0),
-                  RecipesPreview(),
-                ],
-              ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 17.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GroceryListPreview(onPreviewTap: onListTap),
+                const SizedBox(height: 17.0),
+                RecipesPreview(onPreviewTap: onRecipesTap),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 }
 
 class GroceryListPreview extends StatelessWidget {
+  final Function onPreviewTap;
+
+  GroceryListPreview({required this.onPreviewTap});
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => GroceryListScreen()),
-      ),
+      onTap: () => onPreviewTap(), // Use the provided callback to switch screens
       child: Card(
         elevation: 7.0,
         color: Colors.pink[100],
@@ -126,13 +141,14 @@ class GroceryListPreview extends StatelessWidget {
 }
 
 class RecipesPreview extends StatelessWidget {
+  final Function onPreviewTap;
+
+  RecipesPreview({required this.onPreviewTap});
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => RecipeListScreen()),
-      ),
+      onTap: () => onPreviewTap(), // Use the provided callback to switch screens
       child: Card(
         elevation: 7.0,
         color: Colors.pink[100],
@@ -158,3 +174,8 @@ class RecipesPreview extends StatelessWidget {
     );
   }
 }
+
+
+
+
+
