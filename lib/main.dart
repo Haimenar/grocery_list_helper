@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'grocery_list_screen.dart';
 import 'models/recipe.dart';
+import 'models/grocery_item.dart';
 import 'recipe_list_screen.dart';
 import 'grocery_data.dart';
 import 'recipe_data.dart';
@@ -145,9 +146,33 @@ class GroceryListPreview extends StatelessWidget {
                       return ListView.builder(
                         itemCount: groceryData.groceryItems.length,
                         itemBuilder: (context, index) {
-                          return Text(
-                            groceryData.groceryItems[index],
-                            style: TextStyle(color: Colors.grey[100]),
+                          GroceryItem item = groceryData.groceryItems[index];
+
+                          return Card(
+                            color: Colors.pink[200],
+                            elevation: 5.0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
+                            child: ListTile(
+                              contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
+                              title: Text(
+                                item.name,
+                                style: TextStyle(color: Colors.grey[100], fontSize: 16),
+                              ),
+                              subtitle: Text(
+                                "Store: ${item.stores.map((store) => store.name).join(", ")}\nSection: ${item.storeSection}",
+                                style: TextStyle(color: Colors.grey[300], fontSize: 12),
+                              ),
+                              trailing: IconButton(
+                                icon: Icon(item.isChecked ? Icons.check_box : Icons.check_box_outline_blank),
+                                color: Colors.grey[200],
+                                onPressed: () {
+                                  groceryData.toggleChecked(index); // Toggle the checked status
+                                },
+                              ),
+                            ),
                           );
                         },
                       );

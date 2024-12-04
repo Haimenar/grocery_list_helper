@@ -1,13 +1,18 @@
 import 'store.dart';
 
-class ShoppingItem {
+class GroceryItem {
   String id;
   String name;
-  List stores; // When in shopping mode, each item will be sorted by store and section
+  List<Store> stores;
   String storeSection;
-  bool isChecked; // Whether the item is checked off
-  ShoppingItem({required this.id, required this.name, required this.stores, required this.storeSection, this.isChecked = false}) {
-    // TODO: implement ShoppingItem
-    throw UnimplementedError();
-  }
+  bool isChecked;
+
+  GroceryItem({
+    required this.id,
+    required this.name,
+    required this.stores,
+    required this.storeSection,
+    this.isChecked = false,
+  });
 }
+
