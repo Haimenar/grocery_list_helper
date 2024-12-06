@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'grocery_data.dart';
-import 'models/grocery_item.dart';
-import 'models/store.dart';
+import '../services/grocery_data.dart';
+import '../models/grocery_item.dart';
+import '../models/store.dart';
 
 class GroceryListScreen extends StatelessWidget {
   GroceryListScreen({super.key});
@@ -35,9 +35,8 @@ class GroceryListScreen extends StatelessWidget {
 void _showAddGroceryItemDialog(BuildContext context) {
   TextEditingController itemNameController = TextEditingController();
   TextEditingController storeSectionController = TextEditingController();
-  List<Store> selectedStores = []; // List of stores the user selects
+  List<Store> selectedStores = [];
 
-  // Show dialog for adding a new grocery item
   showDialog(
     context: context,
     builder: (context) {
@@ -54,7 +53,6 @@ void _showAddGroceryItemDialog(BuildContext context) {
               controller: storeSectionController,
               decoration: const InputDecoration(hintText: "Store section"),
             ),
-            // Add Store selection logic here
           ],
         ),
         actions: [
@@ -66,7 +64,6 @@ void _showAddGroceryItemDialog(BuildContext context) {
             onPressed: () {
               if (itemNameController.text.isNotEmpty &&
                   storeSectionController.text.isNotEmpty) {
-                // Use the data to create a new GroceryItem
                 GroceryItem newItem = GroceryItem(
                   id: DateTime.now().toString(),
                   name: itemNameController.text,
@@ -103,7 +100,7 @@ class ShoppingListBody extends StatelessWidget {
           return ListView.builder(
             itemCount: groceryData.groceryItems.length,
             itemBuilder: (context, index) {
-              GroceryItem groceryItem = groceryData.groceryItems[index]; // Get the GroceryItem object
+              GroceryItem groceryItem = groceryData.groceryItems[index];
 
               return Card(
                 color: Colors.pink[200],
@@ -115,14 +112,14 @@ class ShoppingListBody extends StatelessWidget {
                 child: ListTile(
                   contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
                   title: Text(
-                    groceryItem.name, // Use the name property of the GroceryItem
+                    groceryItem.name,
                     style: TextStyle(
                       color: Colors.grey[100],
                       fontSize: 16,
                     ),
                   ),
                   subtitle: Text(
-                    "Store Section: ${groceryItem.storeSection}", // Display the store section
+                    "Store Section: ${groceryItem.storeSection}",
                     style: TextStyle(
                       color: Colors.grey[300],
                       fontSize: 12,

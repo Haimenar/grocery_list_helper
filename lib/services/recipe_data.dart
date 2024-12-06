@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'models/recipe.dart';
+import '../models/recipe.dart';
 
 class RecipeData with ChangeNotifier {
   List<Recipe> _recipeItems = [];

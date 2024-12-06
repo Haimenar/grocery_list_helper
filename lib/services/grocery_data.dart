@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'models/grocery_item.dart';
-import 'models/store.dart';
+import '../models/grocery_item.dart';
+import '../models/store.dart';
 
 class GroceryData with ChangeNotifier {
   List<GroceryItem> _groceryItems = [];
@@ -26,6 +26,6 @@ class GroceryData with ChangeNotifier {
 
   void toggleChecked(int index) {
     _groceryItems[index].isChecked = !_groceryItems[index].isChecked;
-    notifyListeners(); // Notify listeners of the change
+    notifyListeners();
   }
 }

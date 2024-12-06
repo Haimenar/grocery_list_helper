@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'grocery_list_screen.dart';
-import 'models/recipe.dart';
-import 'models/grocery_item.dart';
+import '../models/recipe.dart';
+import '../models/grocery_item.dart';
 import 'recipe_list_screen.dart';
-import 'grocery_data.dart';
-import 'recipe_data.dart';
+import '../services/grocery_data.dart';
+import '../services/recipe_data.dart';
 
 void main() {
   runApp(
@@ -57,8 +57,8 @@ class _GroceryHelperMainState extends State<GroceryHelperMain> {
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _currentIndex,
           onTap: (index) => setState(() => _currentIndex = index),
-          backgroundColor: Colors.pink[100],
-          selectedItemColor: Colors.pink[600],
+          backgroundColor: Colors.pink[300],
+          selectedItemColor: Colors.pink[700],
           unselectedItemColor: Colors.grey[100],
           items: const [
             BottomNavigationBarItem(
